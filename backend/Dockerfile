@@ -1,17 +1,14 @@
-# Use lightweight Java 17 base image
-FROM eclipse-temurin:17-jdk-alpine
+# Use official Java 21 base image
+FROM eclipse-temurin:21-jdk-alpine
 
-# Set working directory inside the container
+# Set working directory
 WORKDIR /app
 
-# Copy your compiled JAR file into the image
+# Copy your JAR file into the image
 COPY target/authify-0.0.1-SNAPSHOT.jar app.jar
 
-# Set environment variable (optional)
-ENV SPRING_PROFILES_ACTIVE=prod
-
-# Expose port
+# Expose the default Spring Boot port
 EXPOSE 8080
 
-# Start the Spring Boot application
+# Run the JAR file
 ENTRYPOINT ["java", "-jar", "app.jar"]
