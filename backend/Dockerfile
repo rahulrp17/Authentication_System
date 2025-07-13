@@ -1,14 +1,22 @@
-# Use official Java 21 base image
+# Use Maven to build the JAR
+FROM maven:3.9.6-eclipse-temurin-21 AS builder
+
+WORKDIR /app
+COPY . .
+
+# Build the project (skip tests to speed up)
+RUN mvn clean package -DskipTests
+
+# Use a lighter base image for running the JAR
 FROM eclipse-temurin:21-jdk
 
-# Set working directory
 WORKDIR /app
 
-# Copy your JAR file into the image
-COPY target/authify-0.0.1-SNAPSHOT.jar app.jar
+# Copy the JAR file from the builder stage
+COPY --from=builder /app/target/authify-0.0.1-SNAPSHOT.jar app.jar
 
-# Expose the default Spring Boot port
+# Expose Spring Boot's default port
 EXPOSE 8080
 
-# Run the JAR file
+# Run the application
 ENTRYPOINT ["java", "-jar", "app.jar"]
