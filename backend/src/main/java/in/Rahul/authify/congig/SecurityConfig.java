@@ -60,7 +60,7 @@ public class SecurityConfig {
 
    private CorsConfigurationSource corsConfigurationSource(){
        CorsConfiguration config =new CorsConfiguration();
-       config.setAllowedOrigins(List.of("http://localhost:5173"));
+       config.setAllowedOrigins(List.of("https://authentication-system-frontend-cukc.onrender.com"));
        config.setAllowedMethods(List.of("GET","POST","DELETE","PATCH","OPTIONS"));
        config.setAllowCredentials(true);
        config.setAllowedHeaders(List.of("Authorization","Content-Type"));
