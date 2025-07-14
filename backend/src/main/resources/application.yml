@@ -37,6 +37,4 @@ server:
   servlet:
     context-path: /api/v1.0
 
-jwt:
-  secret:
-    key: ${JWT_SECRET_KEY}
+
