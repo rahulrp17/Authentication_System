@@ -1,11 +1,9 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import assets from "../assets/assets";
-import { useState } from "react";
 import axios from "axios";
 import AppContext from "../context/AppContext";
 import { toast } from "react-toastify";
-
 
 const Login = () => {
   const [isCreateAccount, setIsCreateAccount] = useState(false);
@@ -13,57 +11,66 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const {backendUrl,setIsLoggedIn,getUserData,setIsAccountCreated}=useContext(AppContext)
-  const navigate=useNavigate()
- 
 
-const  onSubmitHandler=async(e)=>{
-  e.preventDefault()
+  const {
+    backendUrl,
+    setIsLoggedIn,
+    getUserData,
+    setIsAccountCreated,
+  } = useContext(AppContext);
 
-  axios.defaults.withCredentials=true
+  const navigate = useNavigate();
 
-  setLoading(true)
-  try{
-    if(isCreateAccount){
-    const response =  await axios.post(`${backendUrl}/register`,{
-        name,
-        email,
-        password
-      });
-      if(response.status===201){
-       navigate("/")
-       setIsAccountCreated(true)
-       toast.success("Account created successfully")
- 
-        
-      }else{
-        toast.error("Email already exists");
+  const onSubmitHandler = async (e) => {
+    e.preventDefault();
+    axios.defaults.withCredentials = true;
+    setLoading(true);
+
+    try {
+      if (isCreateAccount) {
+        const response = await axios.post(`${backendUrl}/register`, {
+          name,
+          email,
+          password,
+        });
+
+        if (response.status === 201) {
+          navigate("/");
+          setIsAccountCreated(true);
+          toast.success("Account created successfully");
+        } else {
+          toast.error("Email already exists");
+        }
+      } else {
+        const response = await axios.post(`${backendUrl}/login`, {
+          email,
+          password,
+        });
+
+        if (response.status === 200) {
+          setIsLoggedIn(true);
+          navigate("/");
+          getUserData();
+          toast.success("Login successful");
+        } else {
+          toast.error("Email or password is incorrect");
+          setIsLoggedIn(false);
+        }
       }
+    } catch (error) {
+      console.error("Login/Register Error:", error);
+      if (error.response?.data?.message) {
+        toast.error(error.response.data.message);
+      } else if (error.message) {
+        toast.error(error.message);
+      } else {
+        toast.error("Something went wrong. Please try again.");
+      }
+      setIsLoggedIn(false);
+    } finally {
+      setLoading(false);
     }
-    else{
-      const response =  await axios.post(`${backendUrl}/login`,{
-        email,
-        password
-      });
-      if(response.status===200){
-       setIsLoggedIn(true)
-       navigate("/")
-       getUserData();
-       toast.success("Login successful")
-        
-      } else{
-        toast.error("Email or password is incorrect");
-        setIsLoggedIn(false)
-      }
-  }
-}catch(error){
-    toast.error(error.response.data.message)
-  }finally{
-    setLoading(false)
-  }
- 
-
-}
+  };
 
   return (
     <div
@@ -96,15 +103,15 @@ const  onSubmitHandler=async(e)=>{
           <img
             className="rounded-pill"
             src={assets.logo_home}
-            st
             height={50}
             width={50}
-            alt=""
+            alt="logo"
           />
-          <span className="fw-bold fs-4 text-dark ">Authify</span>
+          <span className="fw-bold fs-4 text-dark">Authify</span>
         </Link>
       </div>
-      <div className="card p-4 " style={{ width: "100%", maxWidth: "400px" }}>
+
+      <div className="card p-4" style={{ width: "100%", maxWidth: "400px" }}>
         <h2 className="text-center mb-3">
           {isCreateAccount ? "Create Account" : "Login"}
         </h2>
@@ -135,13 +142,13 @@ const  onSubmitHandler=async(e)=>{
               type="email"
               className="form-control"
               id="email"
-              aria-describedby="emailHelp"
-              placeholder="Enter Your Email "
+              placeholder="Enter Your Email"
               required
               onChange={(e) => setEmail(e.target.value)}
               value={email}
             />
           </div>
+
           <div className="mb-3">
             <label htmlFor="password" className="form-label">
               Password
@@ -156,10 +163,12 @@ const  onSubmitHandler=async(e)=>{
               value={password}
             />
           </div>
+
           <div className="mb-3 form-check">
             <input
               type="checkbox"
-              className="form-check-input"style={{cursor:"pointer"}}
+              className="form-check-input"
+              style={{ cursor: "pointer" }}
               id="exampleCheck1"
               required
             />
@@ -168,8 +177,12 @@ const  onSubmitHandler=async(e)=>{
             </label>
           </div>
 
-          <button type="submit" disabled={loading} className="btn btn-primary w-100">
-            {loading?"Loading...":isCreateAccount?"SignUp":"Login"}
+          <button
+            type="submit"
+            disabled={loading}
+            className="btn btn-primary w-100"
+          >
+            {loading ? "Loading..." : isCreateAccount ? "SignUp" : "Login"}
           </button>
 
           <div className="d-flex justify-content-between mb-1">
@@ -181,12 +194,13 @@ const  onSubmitHandler=async(e)=>{
             </Link>
           </div>
 
-          <div className="text-center mt-4 position-relative ">
+          <div className="text-center mt-4 position-relative">
             {isCreateAccount ? (
               <p>
                 Already have an account?{" "}
                 <span
-                  className="text-primary text-decoration-none " style={{cursor:"pointer"}}
+                  className="text-primary text-decoration-none"
+                  style={{ cursor: "pointer" }}
                   onClick={() => setIsCreateAccount(false)}
                 >
                   Login
@@ -196,8 +210,8 @@ const  onSubmitHandler=async(e)=>{
               <p>
                 Don't have an account?{" "}
                 <span
-                  className="text-primary text-decoration-none "
-                  style={{cursor:"pointer"}}
+                  className="text-primary text-decoration-none"
+                  style={{ cursor: "pointer" }}
                   onClick={() => setIsCreateAccount(true)}
                 >
                   SignUp
