@@ -1,4 +1,4 @@
-package in.Rahul.authify.config;
+package in.Rahul.authify.congig;
 
 import in.Rahul.authify.filter.JwtRequestFilter;
 import in.Rahul.authify.sevice.AppUserdetailsService;
