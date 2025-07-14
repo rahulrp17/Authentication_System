@@ -15,17 +15,17 @@ spring:
         dialect: org.hibernate.dialect.MySQL8Dialect
 
   mail:
-    host: ${MAIL_HOST:smtp-relay.brevo.com}
-    port: ${MAIL_PORT:587}
-    username: ${MAIL_USERNAME:90ed92001@smtp-brevo.com}
-    password: ${MAIL_PASSWORD:j5gPD06Xn7AaNwFT}
+    host: ${MAIL_HOST}
+    port: ${MAIL_PORT}
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
     properties:
       mail:
         smtp:
           auth: true
           starttls:
             enable: true
-          from: ${MAIL_FROM:ragulpant411@gmail.com}
+          from: ${MAIL_FROM}
 
   devtools:
     restart:
@@ -39,4 +39,4 @@ server:
 
 jwt:
   secret:
-    key: ${SECRET_KEY:thisisthesecretkeyievercreatedinmydevelopmentcareer}
+    key: ${SECRET_KEY}
