@@ -40,7 +40,7 @@ public class SecurityConfig {
         http.cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth->auth
-                        .requestMatchers("/login","/register","/send-reset-otp","/reset-password","/logout","is-auhtenticated")
+                        .requestMatchers("/login","/register","/send-reset-otp","/reset-password","/logout")
                         .permitAll().anyRequest().authenticated())
                 .sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .logout(AbstractHttpConfigurer::disable)
@@ -60,7 +60,7 @@ public class SecurityConfig {
 
    private CorsConfigurationSource corsConfigurationSource(){
        CorsConfiguration config =new CorsConfiguration();
-       config.setAllowedOrigins(List.of("https://authentication-system-frontend-cukc.onrender.com:http://localhost:5173"));
+       config.setAllowedOrigins(List.of("https://authentication-system-frontend-cukc.onrender.com"));
        config.setAllowedMethods(List.of("GET","POST","DELETE","PATCH","OPTIONS"));
        config.setAllowCredentials(true);
        config.setAllowedHeaders(List.of("Authorization","Content-Type"));
