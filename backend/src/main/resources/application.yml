@@ -39,4 +39,4 @@ server:
 
 jwt:
   secret:
-    key: thisisthesecretkeyievercreatedinmydevelopmentcareer
+    key: ${JWT_SECRET_KEY}
